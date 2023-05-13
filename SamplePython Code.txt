@@ -1,0 +1,16 @@
+import pandas as pd
+import numpy as np
+from random import choices
+from string import ascii_uppercase
+
+num_samples = 10000
+probe_ids = [''.join(choices(ascii_uppercase, k=1)) + '-' + str(np.random.randint(1, num_samples//10)) for _ in range(num_samples)]
+data_set = pd.DataFrame({'ProbeName': probe_ids, 'RedMedianSignal': np.random.randn(num_samples), 'GreenMedianSignal': np.random.randn(num_samples)})
+
+if any(data_set['ProbeName'].duplicated()):
+    median_set = data_set.groupby('ProbeName').median().reset_index()
+    new_data_set = median_set
+
+print(data_set.shape)
+print(new_data_set.shape)
+print(any(new_data_set['ProbeName'].duplicated()))

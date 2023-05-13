@@ -1,0 +1,12 @@
+Sample SQL code that uses a CTE and a join to find redundant data, which can be more efficient for large data sets. It also allows you to easily modify the criteria for identifying redundant data by changing the grouping and filtering conditions in the CTE.
+
+WITH RedundantData AS (
+    SELECT ForecastDate, ProductID, COUNT(*) AS Count
+    FROM ForecastedData
+    GROUP BY ForecastDate, ProductID
+    HAVING COUNT(*) > 1
+)
+SELECT F.*
+FROM ForecastedData AS F
+JOIN RedundantData AS R
+ON F.ForecastDate = R.ForecastDate AND F.ProductID = R.ProductID;
